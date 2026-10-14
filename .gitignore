@@ -1,0 +1,21 @@
+node_modules/
+**/node_modules/
+.env
+.env.*
+!.env.example
+dist/
+build/
+coverage/
+*.log
+
+# Secrets
+**/serviceAccountKey.json
+.env
+.env.*
+!.env.example
+
+# Uploaded files
+services/agent/uploads/
+
+# Dependencies
+**/node_modules/

@@ -1,0 +1,1 @@
+export { getFromS3 } from "./getFromS3.js";

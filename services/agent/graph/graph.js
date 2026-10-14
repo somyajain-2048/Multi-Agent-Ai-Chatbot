@@ -1,0 +1,51 @@
+import { StateGraph } from "@langchain/langgraph";
+import { agentState } from "./state.js";
+import { router } from "./router.js";
+import { chatAgent } from "../agents/chat.agent.js";
+import { searchAgent } from "../agents/search.agent.js";
+import { pdfAgent } from "../agents/pdf.agent.js";
+import { pptAgent } from "../agents/ppt.agent.js";
+import { pdfRag } from "../agents/pdfRag.agents.js";
+
+const workflow = new StateGraph(agentState);
+
+workflow.addNode("router", router);
+workflow.addNode("chat", chatAgent);
+workflow.addNode("search", searchAgent);
+workflow.addNode("pdf", pdfAgent);
+workflow.addNode("ppt", pptAgent);
+workflow.addNode("pdfRag",pdfRag);
+workflow.addEdge("__start__", "router");
+
+workflow.
+addConditionalEdges("router", (state) => {
+    switch (state.agent) {
+        case "chat":
+            return "chat";
+        case "search":
+            return "search";
+        case "pdf":
+            return "pdf";
+        case "ppt":
+            return "ppt";
+        case "pdfRag":
+            return "pdfRag"
+        default:
+            return "chat";
+    }
+}, {
+    chat: "chat",
+    search: "search",
+    pdf: "pdf",
+    ppt: "ppt",
+    pdfRag:"pdfRag"
+
+});
+
+workflow.addEdge("search", "chat");
+workflow.addEdge("chat", "__end__");
+workflow.addEdge("pdf", "__end__");
+workflow.addEdge("ppt", "__end__");
+workflow.addEdge("pdfRag","__end__")
+
+export const graph = workflow.compile();
