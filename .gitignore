@@ -19,3 +19,12 @@ services/agent/uploads/
 
 # Dependencies
 **/node_modules/
+
+**/node_modules/
+**/serviceAccountKey.json
+.env
+.env.*
+!.env.example
+**/uploads/
+dist/
+**/dist/
